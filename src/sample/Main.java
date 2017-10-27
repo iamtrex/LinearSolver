@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -26,8 +27,8 @@ public class Main extends Application {
 
         Group root = new Group();
 
-        VBox box = new VBox(1);
-        root.getChildren().add(box);
+        VBox box = new VBox(10);
+
 
         text = new TextArea();
         text.setWrapText(true);
@@ -42,10 +43,17 @@ public class Main extends Application {
         box.getChildren().add(tSolved);
         box.setAlignment(Pos.CENTER);
 
+        HBox outerBox = new HBox(10);
+        outerBox.getChildren().add(box);
+        outerBox.setAlignment(Pos.CENTER);
 
+        root.getChildren().add(outerBox);
+
+
+        Scene scene = new Scene(root, 500, 500);
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 500, 500));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

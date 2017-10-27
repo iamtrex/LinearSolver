@@ -1,6 +1,7 @@
 package sample;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,6 +10,8 @@ import java.util.Set;
 
 
 public class Solver {
+    double DELTA = 1e-8;
+
 
     public void print2D(Object o){
         List<Object> list = (List<Object>) o;
@@ -72,8 +75,10 @@ public class Solver {
                 return deciMatrix;
             }else if (nextRowCol[0] != rowIndex+1){
                 //the next non-zero is not in the same row, swap the two rows;
+                System.out.println("Swapping Rows");
                 swapRows(deciMatrix, rowIndex+1, nextRowCol[0]);
             }
+            System.out.println("Same Row " + nextRowCol[0] + " " + (rowIndex+1));
             //Given row and column, make all subsequent values in that row 0.
             deciMatrix.set(rowIndex+1, reduceRow(deciMatrix.get(rowIndex+1), nextRowCol[1])); //Reduces current row.
 
@@ -94,8 +99,9 @@ public class Solver {
         for(int i=row+1; i<noRows; i++){
             if(deciMatrix.get(i).get(col) != BigDecimal.ZERO){
                 //Subtract row above to make zero;
+                BigDecimal fac = deciMatrix.get(i).get(col);
                 for(int j=col; j<noCols; j++){
-                    BigDecimal sub = referenceRow.get(j);
+                    BigDecimal sub = referenceRow.get(j).multiply(fac);
                     BigDecimal temp = deciMatrix.get(i).get(j).subtract(sub);
                     deciMatrix.get(i).set(j, temp);
                 }
@@ -104,8 +110,11 @@ public class Solver {
     }
 
     private List<BigDecimal> reduceRow(List<BigDecimal> row, int col) {
-        if(row.get(col) != BigDecimal.ONE){
+        BigDecimal value = row.get(col).setScale(0, RoundingMode.HALF_UP);
+
+        if(value != BigDecimal.ONE && value != BigDecimal.ZERO){
             BigDecimal fac = row.get(col);
+            System.out.println("Factor " + fac);
 
             for(int i=col; i<row.size(); i++){
                 BigDecimal temp = row.get(i).divide(fac, 4, RoundingMode.HALF_UP);
@@ -140,8 +149,8 @@ public class Solver {
         int col = lastCol+1;
 
         while(col < matrix.get(0).size()) {
-            for (int row = lastRow+1; row < matrix.size(); row++) {
-                if (matrix.get(row).get(col) != BigDecimal.ZERO){
+            for (int row = lastRow + 1; row < matrix.size(); row++) {
+                if (Math.abs(matrix.get(row).get(col).doubleValue()) >= DELTA){ //Greater than zero.
                     return new int[] {row, col};
                 }
             }
@@ -166,7 +175,7 @@ public class Solver {
 
             String split[] = line.split("=");
 
-            analyzeLine(split[0], matrix, i);
+            analyzeLine(split[0].trim(), matrix, i);
             bVector.add(i, Integer.parseInt(split[1].trim()));
 
         }
@@ -198,18 +207,24 @@ public class Solver {
         String[] parts = line.split("\\+");
 
         int val = 0;
+        boolean negative = false;
 
         for(String s : parts){
             s = s.trim();
             CharSequence cs = s;
             for(int i=0; i<cs.length(); i++){
                 char c = cs.charAt(i);
-                if(isNumber(c)){
+                if(c == ' ') {
+                   //Ignore.
+                }else if(isNumber(c)){
                     if(val == 0){
                         val = Integer.parseInt(String.valueOf(c));
                     }else{
                         val = val*10 + Integer.parseInt(String.valueOf(c));
                     }
+                }else if(c == '-'){
+                    System.out.println("Detected Negative Number");
+                    negative = !negative;
                 }else{
                     if(val == 0){
                         //System.out.println("You are trying to set a variable to zero, you must be trolling");
@@ -235,7 +250,11 @@ public class Solver {
                     System.out.println("Size of Matrix " + matrix.size() + " " +
                             matrix.get(0).size() + " " + matrix.get(row).size());
 
-                    matrix.get(row).set(index, val);
+                    if(negative){
+                        val = val * -1;
+                    }
+                    int old = matrix.get(row).get(index);
+                    matrix.get(row).set(index, val + old);
                     val = 0;
 
                 }
