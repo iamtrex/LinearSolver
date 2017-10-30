@@ -274,15 +274,10 @@ public class Solver {
     }
 
     private boolean isNumber(char c){
-        System.out.println("Is number " + c);
         int i = Character.getNumericValue(c);
-        System.out.println("Numeric Value " + i);
         if(i <= 9 && i >= 0){
-
-            System.out.println("true");
             return true;
         }
-        System.out.println("false");
         return false;
     }
 }

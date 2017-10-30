@@ -1,35 +1,38 @@
-package sample;
+package com.rweqx.view;
 
-import javafx.application.Application;
+import com.rweqx.model.EchelonReducer;
+import com.rweqx.model.InputParser;
+import com.rweqx.model.Matrix;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sample.Solver;
 
-public class Main extends Application {
 
+public class Window {
     Button calculate;
     TextArea text;
     TextArea tComputingMatrix;
     TextArea tSolved;
 
-    //Controller control;
-    Solver solver;
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        solver = new Solver();
+    InputParser IP;
+    EchelonReducer ER;
+    Matrix matrix;
 
+    public Window(){
+
+    }
+    public void buildWindow(Stage primaryStage) {
         Group root = new Group();
 
         VBox box = new VBox(10);
-
 
         text = new TextArea();
         text.setWrapText(true);
@@ -39,7 +42,6 @@ public class Main extends Application {
 
         tSolved = new TextArea();
         tSolved.setWrapText(true);
-
 
         calculate = new Button("Solve the Linear System");
         calculate.setOnAction(this::calculateSystem);
@@ -63,12 +65,14 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    private void calculateSystem(ActionEvent e) {
-        tSolved.setText(solver.solveLinearSystem(text.getText()));
+    private void calculateSystem(ActionEvent e){
+        Platform.runLater( ()->{
+            IP = new InputParser(text.getText());
+            matrix = IP.getMatrix();
+            tComputingMatrix.setText(matrix.getStringVersionOfMatrix());
+            ER = new EchelonReducer(matrix);
+            ER.convertToEchelonMatrix();
+            tSolved.setText(matrix.getStringVersionOfMatrix());
+        });
     }
 }
