@@ -36,14 +36,8 @@ public class InputParser {
 
         Segment[] splitSegs = splitIntoSegments(split[0].trim());
         matrix.buildLine(splitSegs);
-
-
         matrix.addSolution(MathEvaluator.evalMath(split[1].trim()));
 
-
-
-
-        //Check form?
 
 
     }
@@ -90,7 +84,9 @@ public class InputParser {
                     div = i;
                     break;
                 case ' ':
-                    //Ignore;
+                    if(div != -1 && bracket == -1){
+                        div = -1;
+                    }
                     break;
                 case '+':
                     //Same as - .
@@ -132,6 +128,9 @@ public class InputParser {
                     }else{
                         if(bracket != -1){
                             Logger.log("Cannot recognize functions in the form of 2(x + y), must be 2x + 2y.");
+                        }
+                        if(div != -1 && bracket == -1){
+                            div = -1;
                         }
                         //Is a variable
                         variable += c;

@@ -158,9 +158,9 @@ public class Matrix {
                 if(j == matrix.get(i).size()-1){ //Last variable already...
                     tail = "";
                 }
-                if(Math.abs(val) > EPSILON){
+                //if(Math.abs(val) > EPSILON){
                     s+= val + variableNames.get(j) + tail; //Add variable for the respective column J
-                }
+                //}
             }
             //Finished row.
             s += " = " + solutionsFor.get(i) + "\n";

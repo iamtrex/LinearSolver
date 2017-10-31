@@ -26,12 +26,11 @@ public class EchelonReducer {
         //Eval pivots.
         int expectedNextRow = 0;
         int expectedNextCol = 0;
-        int row;
-        int col = 0;
+
 
         int nextPivot[]; //3 index int array, row, col, value;
 
-        while((nextPivot = getNextNonZeroRow(expectedNextRow, expectedNextCol))[0] != -1){
+        while((nextPivot = getNextNonZeroRow(expectedNextRow, expectedNextCol, Direction.DOWN))[0] != -1){
             if(expectedNextRow != nextPivot[0]){
                 ops.swapRows(matrix, expectedNextRow, nextPivot[0]);
                 nextPivot[0] = expectedNextRow; //Have now moved the row;
@@ -71,21 +70,26 @@ public class EchelonReducer {
 
     }
 
-    public int[] getNextNonZeroRow(int expRow, int expCol) {
-        List<List<Double>> AMatrix = matrix.getAMatrix();
+    public int[] getNextNonZeroRow(int expRow, int expCol, Direction d) {
+        if(d == Direction.DOWN) {
+            List<List<Double>> AMatrix = matrix.getAMatrix();
 
-        //Has to be in a col after the expected one...
-        for(int j=expCol; j<AMatrix.get(0).size(); j++){
-            //Has to be in a row after the expected one...
-            for (int i = expRow; i < AMatrix.size(); i++) {
-                double val = matrix.getValue(i, j);
-                if(Math.abs(val) > EPSILON){
-                    //Non-Zero
-                    return new int[] {i, j};
+            //Has to be in a col after the expected one...
+            for (int j = expCol; j < AMatrix.get(0).size(); j++) {
+                //Has to be in a row after the expected one...
+                for (int i = expRow; i < AMatrix.size(); i++) {
+                    double val = matrix.getValue(i, j);
+                    if (Math.abs(val) > EPSILON) {
+                        //Non-Zero
+                        return new int[]{i, j};
+                    }
                 }
             }
+            //Ran out of cols without a value greater than 0...
+            return new int[]{-1, -1};
+        }else{
+            //TODO - Return proper shit
+            return null;
         }
-        //Ran out of cols without a value greater than 0...
-        return new int[] {-1, -1};
     }
 }
