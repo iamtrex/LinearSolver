@@ -19,6 +19,41 @@ public class Matrix {
     Map<Integer, String> variableNames;
     List<Double> solutionsFor; // Solutions
 
+    private int varIndex = 0;
+
+    public Matrix(){
+        matrix = new ArrayList<>();
+
+        variableNames = new HashMap<>();
+
+        solutionsFor = new ArrayList<>();
+    }
+
+    //Deep Copy of Matrix.
+    public Matrix(List<List<Double>> matrix, Map<Integer, String> variableNames, List<Double> solutionsFor, int varIndex) {
+        this.matrix = new ArrayList<>();
+        this.variableNames = new HashMap<>();
+        this.solutionsFor = new ArrayList<>();
+
+        this.variableNames.putAll(variableNames);
+
+        for(double d : solutionsFor){
+            this.solutionsFor.add(d);
+        }
+        for(int i=0; i<matrix.size(); i++){
+            List<Double> temp = new ArrayList<>();
+            for(double j : matrix.get(0)){
+                temp.add(j);
+            }
+            this.matrix.add(temp);
+        }
+
+
+    }
+
+    public Matrix makeCopy(){
+        return new Matrix(matrix, variableNames, solutionsFor, varIndex);
+    }
 
     //Checks if there is a problem with the formed matrix. Should always return true;
     public boolean properForm(){
@@ -32,16 +67,8 @@ public class Matrix {
         return true;
     }
 
-    public Matrix(){
-        matrix = new ArrayList<>();
-
-        variableNames = new HashMap<>();
-
-        solutionsFor = new ArrayList<>();
 
 
-    }
-    private int varIndex = 0;
 
     public void addVariable(String s){
         Logger.log("Creating new variable at index " + varIndex);
@@ -88,15 +115,14 @@ public class Matrix {
         }
     }
 
-    public void setValue(String varName, int row, double value){
-        int col = getIndex(varName);
-        //matrix.get(row).set(col, value);
-        setValue(row, col, value);
-    }
+
     public void setValue(int row, int col, double value){
-        Logger.log("Row Col " + row + ", " + col);
         matrix.get(row).set(col, value);
 
+    }
+
+    public void addToValue(int row, int col, double value){
+        matrix.get(row).set(col, matrix.get(row).get(col) + value);
     }
 
     public void addSolution(double d){
@@ -116,10 +142,8 @@ public class Matrix {
         addNewLine();
 
         for(Segment seg : splitSegs){
-            setValue(seg.getVar(), row, seg.getDouble());
+            addToValue(row, getIndex(seg.getVar()), seg.getDouble());
         }
-
-
     }
 
     public List<List<Double>> getAMatrix(){

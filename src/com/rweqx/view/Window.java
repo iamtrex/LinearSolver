@@ -71,8 +71,11 @@ public class Window {
             matrix = IP.getMatrix();
             tComputingMatrix.setText(matrix.getStringVersionOfMatrix());
             ER = new EchelonReducer(matrix);
-            ER.convertToEchelonMatrix();
-            tSolved.setText(matrix.getStringVersionOfMatrix());
+        //    ER.convertToEchelonMatrix();
+            ER.convertToReducedEchelonMatrix();
+            tSolved.setText("Echelon Form -\n" + ER.getEchelon().getStringVersionOfMatrix() +
+                    "Reduced Echelon Form -\n" + ER.getRedEchelonForm().getStringVersionOfMatrix());
+
         });
     }
 }
