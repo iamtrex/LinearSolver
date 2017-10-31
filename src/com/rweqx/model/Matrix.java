@@ -179,7 +179,7 @@ public class Matrix {
                 double val = matrix.get(i).get(j);
 
                 String tail = " + ";
-                if(j == matrix.get(i).size()-1){ //Last variable already...
+                if(j == matrix.get(i).size()-1){ //Last variable already... don't add extra + sign.
                     tail = "";
                 }
                 //if(Math.abs(val) > EPSILON){
