@@ -1,7 +1,8 @@
 # LinearSolver
+
 Linear Systems solver using row reduction on the augmented matrix (by
-generating the Echelon and Reduced Echelon
-Linear Systems solver using elementary operations on Matricies
+generating the Echelon and Reduced Echelon forms using elementary
+operations on Matricies
 
 
 
@@ -16,4 +17,5 @@ Features Currently being Considered for Development (in no particular order)
 * Present answers in variable form for an linear system rather than as
     an augmented matrix.
 * Matrix input -> Allows for input split by , or just in muliple boxes.
+    * Allowing for faster input
 
