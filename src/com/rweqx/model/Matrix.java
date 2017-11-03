@@ -23,37 +23,35 @@ public class Matrix {
 
     public Matrix(){
         matrix = new ArrayList<>();
-
         variableNames = new HashMap<>();
-
         solutionsFor = new ArrayList<>();
     }
 
     //Deep Copy of Matrix.
-    public Matrix(List<List<Double>> matrix, Map<Integer, String> variableNames, List<Double> solutionsFor, int varIndex) {
-        this.matrix = new ArrayList<>();
-        this.variableNames = new HashMap<>();
-        this.solutionsFor = new ArrayList<>();
+    public Matrix(Matrix m){
+        Map<Integer, String> vars = m.getVariables();
+        List<List<Double>> tempM = m.getAMatrix();
+        List<Double> solutionsFor = m.getSolFor();
 
-        this.variableNames.putAll(variableNames);
-
-        for(double d : solutionsFor){
-            this.solutionsFor.add(d);
-        }
-        for(int i=0; i<matrix.size(); i++){
+        matrix = new ArrayList<>();
+        for(int i=0; i<tempM.size(); i++){
             List<Double> temp = new ArrayList<>();
-            for(double j : matrix.get(0)){
-                temp.add(j);
+            for(int j=0; j<tempM.get(i).size(); j++){
+                temp.add(tempM.get(i).get(j));
             }
-            this.matrix.add(temp);
+            matrix.add(temp);
         }
 
+        variableNames = new HashMap<>();
+        variableNames.putAll(vars);
+
+        this.solutionsFor = new ArrayList<>();
+        for(int i=0; i<solutionsFor.size(); i++){
+            this.solutionsFor.add(solutionsFor.get(i));
+        }
 
     }
 
-    public Matrix makeCopy(){
-        return new Matrix(matrix, variableNames, solutionsFor, varIndex);
-    }
 
     //Checks if there is a problem with the formed matrix. Should always return true;
     public boolean properForm(){

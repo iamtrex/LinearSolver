@@ -27,7 +27,7 @@ public class EchelonReducer {
 
     public EchelonReducer(Matrix matrix){
         this.matrix = matrix;
-        this.original = matrix.makeCopy();
+        this.original = new Matrix(matrix); //Copy.
         ops = new ElementaryRowOperations();
     }
 
@@ -59,12 +59,14 @@ public class EchelonReducer {
         }
         //Done conversion to Echelon form... Cannot simplify further.
         echelon = true;
-        echelonForm = matrix.makeCopy();
+        echelonForm = new Matrix(matrix);
     }
 
     private void reduceRow(int[] nextPivot){
         double val = matrix.getValue(nextPivot[0], nextPivot[1]);
-        ops.scalarMult(matrix, nextPivot[0], 1.0/val);
+        if(Math.abs(val - 1.0) > EPSILON){
+            ops.scalarMult(matrix, nextPivot[0], 1.0/val);
+        }
     }
 
 
@@ -89,10 +91,10 @@ public class EchelonReducer {
     }
     private void reduceAbyB(int aRow, int aCol, int bRow, int bCol){
         double val = matrix.getValue(aRow, aCol);
-        if(Math.abs(val) > EPSILON) {
+    //    if(Math.abs(val) > EPSILON) {
             double factor = val / matrix.getValue(bRow, bCol) * -1;
             ops.addMult(matrix, aRow, bRow, factor);
-        }
+    //    }
     }
 
     public void convertToReducedEchelonMatrix(){
@@ -123,7 +125,7 @@ public class EchelonReducer {
             expectedNextRow --;
         }
 
-        redEchelonForm = matrix.makeCopy();
+        redEchelonForm = new Matrix(matrix);
         redEchelon = true;
 
     }
