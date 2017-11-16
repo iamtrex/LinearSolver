@@ -61,11 +61,8 @@ public class Matrix {
                 || matrix.get(0).size() != variableNames.size()){
             return false;
         }
-
         return true;
     }
-
-
 
 
     public void addVariable(String s){
@@ -127,9 +124,12 @@ public class Matrix {
         solutionsFor.add(d);
     }
 
+    /*
     public Double getSolution(int row){
         return solutionsFor.get(row);
-    }
+    }*/
+    
+
     public Double getValue(int row, int col){
         return matrix.get(row).get(col);
     }

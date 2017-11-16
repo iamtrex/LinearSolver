@@ -24,10 +24,9 @@ public class Segment {
 
 
     public double getDouble() {
-
         Logger.log("Expression " + expression);
-
         double d = MathEvaluator.evalMath(expression);
+
         Logger.log("Result " + d);
         if(negative){
             return -1 * d;

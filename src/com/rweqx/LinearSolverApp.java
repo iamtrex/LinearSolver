@@ -16,6 +16,8 @@ public class LinearSolverApp extends Application{
 
     public static void main(String[] args) {
         launch(args);
+
+
         //test();
     }
     public static void test(){
@@ -36,5 +38,7 @@ public class LinearSolverApp extends Application{
     public void start(Stage primaryStage) throws Exception {
         Window window = new Window();
         window.buildWindow(primaryStage);
+
+        Logger logger = new Logger();
     }
 }

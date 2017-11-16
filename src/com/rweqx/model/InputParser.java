@@ -14,8 +14,7 @@ public class InputParser {
     Matrix matrix;
     public InputParser(String data){
         matrix = new Matrix();
-
-        parse(data);
+        parse(data); //Parses data into the matrix.
     }
 
     private void parse(String data){

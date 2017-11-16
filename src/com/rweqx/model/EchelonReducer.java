@@ -7,12 +7,11 @@ public class EchelonReducer {
     private final static double EPSILON = 1e-8; //double imprecision factor.
 
 
-    //TODO Change to not operate on original inputed matrix and have a fixed IO.
-    ElementaryRowOperations ops;
-    Matrix matrix;
-    Matrix original;
-    Matrix echelonForm;
-    Matrix redEchelonForm;
+    private ElementaryRowOperations ops;
+    private Matrix matrix;
+    private Matrix original;
+    private Matrix echelonForm;
+    private Matrix redEchelonForm;
 
     boolean echelon = false;
     boolean redEchelon = false;
@@ -26,7 +25,7 @@ public class EchelonReducer {
     }
 
     public EchelonReducer(Matrix matrix){
-        this.matrix = matrix;
+        this.matrix = new Matrix(matrix); //Copy. Deletes previous reference to the matrix created by InputParser.
         this.original = new Matrix(matrix); //Copy.
         ops = new ElementaryRowOperations();
     }
@@ -127,10 +126,9 @@ public class EchelonReducer {
 
         redEchelonForm = new Matrix(matrix);
         redEchelon = true;
-
     }
 
-    public int[] getNextNonZeroRow(int expRow, int expCol, Direction d) {
+    private int[] getNextNonZeroRow(int expRow, int expCol, Direction d) {
         if(d == Direction.DOWN) {
             List<List<Double>> AMatrix = matrix.getAMatrix();
 
