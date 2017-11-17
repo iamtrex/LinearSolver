@@ -29,7 +29,7 @@ public class Logger {
 
         stage.setScene(scene);
         stage.show();
-
+//
     }
     public static void log(String s) {
 
